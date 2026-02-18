@@ -26,6 +26,42 @@ class MongoAbsenceRepository(AbsenceRepository):
             document["id"] = str(document["_id"])
             results.append(Absence(**document))
         return results
+    
+    async def update(self, absence_id: str, data: dict) -> Absence | None:
+        result = await self.collection.update_one(
+            {"_id": absence_id},
+            {"$set": data}
+        )
+        if result.modified_count:
+            doc = await self.collection.find_one({"_id": absence_id})
+            doc["id"] = str(doc["_id"])
+            return Absence(**doc)
+        return None
+    
+    async def delete(self, absence_id: str) -> bool:
+        result = await self.collection.delete_one({"_id":absence_id})
+        return result.deleted_count > 0
+
+    async def filter_by_employee(self, employee_id: str, page: int = 1, limit: int = 20) -> List[Absence]:
+        skip = (page - 1) * limit
+        cursor = self.collection.find(
+            {"employee_id":employee_id}).skip(skip).limit(limit)
+
+        results = []
+        async for document in cursor:
+            document["id"] = str(document["_id"])
+            results.append(Absence(**document))
+        return results
+    
+    async def filter_by_status(self, status: str, page: int = 1, limit: int = 20) -> List[Absence]:
+        skip = (page - 1) * limit
+        cursor = self.collection.find({"status": status}).skip(skip).limit(limit)
+        results = []
+        async for document in cursor:
+            document["id"] = str(document["_id"])
+            results.append(Absence(**document))
+        return results
+
 
 
 def get_absence_repository():

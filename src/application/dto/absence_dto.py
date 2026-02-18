@@ -8,3 +8,10 @@ class CreateAbsenceDTO(BaseModel):
     date_end: date
 
 
+class UpdateAbsenceDTO(BaseModel):
+    rease: str | None = None
+    date_start: date | None = None
+    date_end: date | None = None
+    status: str | None = None
+
+
