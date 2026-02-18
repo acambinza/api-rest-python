@@ -1,16 +1,19 @@
+from typing import List
 from src.infrastructure.logger import logger
-import src.infrastructure.logger
 from src.infrastructure.security.keycloak_auth import jwt_auth
 from fastapi import APIRouter, Depends, HTTPException
 from src.application.dto.absence_dto import CreateAbsenceDTO
 from src.infrastructure.database.mongo_client import get_absence_repository
+from src.domain.entities.absence import Absence
+from src.application.dto.pagination_dto import PaginationDTO
+
 
 router = APIRouter(prefix="/api/v1/absences")
 
 @router.post("/", response_model=Absence)
 async def create_absence(
-        dto: CreateAbsenceDTO, repo= 
-        Depends(get_absence_repository),
+        dto: CreateAbsenceDTO, 
+        repo= Depends(get_absence_repository),
         user= Depends(jwt_auth)):
     logger.info(f"Usuario {user['preferred_username']} criando ausencia")
     absence = Absence(**dto.dict())
@@ -29,14 +32,14 @@ async def list_absences(
 @router.get("/{absence_id}", response_model=Absence)
 async def get_abence(
         absence_id: str,
-        repo: Depends(get_absence_repository),
+        repo = Depends(get_absence_repository),
         user = Depends(jwt_auth)):
     absence = await repo.get_by_id(absence_id)
     if not absence:
         raise HTTPException(status_code=404, detail="Ausencia nao encontrada")
     return absence
 
-@route.patch("/{absence_id}", response_model=Absence)
+@router.patch("/{absence_id}", response_model=Absence)
 async def update_absence(
     absence_id: str,
     repo = Depends(get_absence_repository),

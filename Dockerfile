@@ -6,6 +6,6 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./src ./src
+# COPY ./src ./src
 
 CMD ["uvicorn", "src.presentation.routes.absence_routes:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

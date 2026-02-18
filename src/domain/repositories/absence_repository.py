@@ -1,6 +1,5 @@
-from typing import Optional
+from typing import List, Optional
 from abc import ABC, abstractmethod
-from typic import List
 from src.domain.entities.absence import Absence
 
 class AbsenceRepository(ABC):
@@ -9,7 +8,7 @@ class AbsenceRepository(ABC):
         pass
 
     @abstractmethod
-    async def list_all(self, page: int = 1, limit: init = 20) -> List[Absence]:
+    async def list_all(self, page: int = 1, limit: int = 20) -> List[Absence]:
         pass
 
     @abstractmethod

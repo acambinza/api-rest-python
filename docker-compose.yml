@@ -23,13 +23,20 @@ services:
     ports:
       - "8080:8080"
     command: start-dev
+    volumes:
+      - keycloak_data:/opt/keycloak/data
 
   api:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - ./src:/app/src
+    command: uvicorn src.presentation.routes.absence_routes:app --host 0.0.0.0 --port 8000 --reload
     depends_on:
       - mongodb
       - keycloak
+
 volumes:
   mongo_data:
+  keycloak_data:
