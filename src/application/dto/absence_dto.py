@@ -2,16 +2,19 @@ from pydantic import BaseModel
 from datetime import date 
 
 class CreateAbsenceDTO(BaseModel):
-    emplotee_id: str 
+    employee_id: str 
     reason: str
     date_start: date
     date_end: date
 
 
+class ListAbsenceDTO(BaseModel):
+    page: int = 1
+    limit: int = 20
+
+
 class UpdateAbsenceDTO(BaseModel):
-    rease: str | None = None
+    reason: str | None = None
     date_start: date | None = None
     date_end: date | None = None
-    status: str | None = None
-
-
+    employee_id: str | None = None

@@ -16,7 +16,7 @@ class AbsenceRepository(ABC):
         pass
 
     @abstractmethod
-    async def update(self, absence_id: str, data: dict) ->Optional[Absence]:
+    async def update(self, absence_id: str, absence: Absence) ->Optional[Absence]:
         pass
 
     @abstractmethod
@@ -27,8 +27,5 @@ class AbsenceRepository(ABC):
     async def filter_by_employee(self, employee_id: str, page: int = 1, limit: int = 20) -> List[Absence]:
         pass
 
-    @abstractmethod
-    async def filter_by_status(self, status: str, page: int = 1, limit: int = 20) -> List[Absence]:
-        pass
 
     
